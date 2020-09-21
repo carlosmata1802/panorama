@@ -23,16 +23,16 @@ const Posts = () => {
         setPosts(posts)
     }
     const getPostByUser = async ({ target }) => {
-        console.log("SEARHC", form.search)
+        // console.log("SEARHC", form.search)
         setForm({ ...form, user: target.value })
         if (target.value == "" && form.search == '') {
-            console.log("VACIO", form.data)
+            // console.log("VACIO", form.data)
             setPosts(form.data);
             return
         }
 
         let { data } = await api.getPostsByUserId(target.value)
-        console.log(data)
+        // console.log(data)
         let posts = form.search === "" && target.value === "" ? data
             : target.value === "" ? form.data.filter(post => post.title.toLowerCase().indexOf(form.search.toLowerCase()) > -1)
                 : form.data.filter(post => post.title.toLowerCase().indexOf(form.search.toLowerCase()) > -1).
@@ -68,7 +68,6 @@ const Posts = () => {
     }
 
     const handleSubmit = data => {
-        console.log(data);
         Swal.fire(
             'Post Created!',
             `The post with title <p class="font-weight-bold">${data.title}</p> was created `,
