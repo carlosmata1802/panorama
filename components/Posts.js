@@ -23,15 +23,14 @@ const Posts = () => {
         setPosts(posts)
     }
     const getPostByUser = async ({ target }) => {
-        // console.log("SEARHC", form.search)
         setShowUsers(false)
-        if (target.value == "" && form.search == '') {
-            // console.log("VACIO", form.data)
+        if (target.value === "" && form.search === '') {
             setPosts(form.data);
             return
         }
+
         const user = form.users.find(user => user.id === target.value);
-        setForm({ ...form, user: user.name, userId: target.value });
+        setForm({ ...form, user: user && user.name.length > 0 ? user.name : '', userId: target.value });
 
         let { data } = await api.getPostsByUserId(target.value)
         // console.log(data)
@@ -53,8 +52,6 @@ const Posts = () => {
         let newPosts = form.user !== "" && target.value === "" ? form.data.filter(post => Number(post.userId) === Number(form.userId))
             : form.user !== "" ? posts.filter(post => post.title.toLowerCase().indexOf(target.value.toLowerCase()) > -1)
                 : form.data.filter(post => post.title.toLowerCase().indexOf(target.value.toLowerCase()) > -1);
-
-        console.log(newPosts)
 
         setForm({ ...form, [target.name]: target.value });
         setPosts(newPosts);

@@ -8,7 +8,6 @@ const Paginate = ({ handleSetRows, total, from, setFrom, to, setTo }) => {
     const getPages = () => {
         let pages = total % rows !== 0 ? parseInt(total / rows) + 1 : parseInt(total / rows);
         setPages([...Array(pages).keys()].map(x => x + 1));
-        console.log([...Array(pages).keys()].map(x => x + 1), total % rows)
     }
 
     const handleChange = e => {
