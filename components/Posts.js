@@ -24,12 +24,14 @@ const Posts = () => {
     }
     const getPostByUser = async ({ target }) => {
         // console.log("SEARHC", form.search)
-        setForm({ ...form, user: target.value })
+        setShowUsers(false)
         if (target.value == "" && form.search == '') {
             // console.log("VACIO", form.data)
             setPosts(form.data);
             return
         }
+        const user = form.users.find(user => user.id === target.value);
+        setForm({ ...form, user: user.name, userId: target.value });
 
         let { data } = await api.getPostsByUserId(target.value)
         // console.log(data)
@@ -47,9 +49,12 @@ const Posts = () => {
             setPosts(form.data)
             return
         }
-        let newPosts = form.user !== "" && target.value === "" ? form.data.filter(post => Number(post.userId) === Number(form.user))
+
+        let newPosts = form.user !== "" && target.value === "" ? form.data.filter(post => Number(post.userId) === Number(form.userId))
             : form.user !== "" ? posts.filter(post => post.title.toLowerCase().indexOf(target.value.toLowerCase()) > -1)
                 : form.data.filter(post => post.title.toLowerCase().indexOf(target.value.toLowerCase()) > -1);
+
+        console.log(newPosts)
 
         setForm({ ...form, [target.name]: target.value });
         setPosts(newPosts);
@@ -98,14 +103,19 @@ const Posts = () => {
                                             getPostByUser({ target: { value: '' } })
                                         }}
                                     />
-                                    <input type="text" id="filterUser" name="user" placeholder="user" value={form.user} onChange={getPostByUser} />
+                                    <input type="text" id="filterUser" name="user" onFocus={() => setShowUsers(true)} placeholder="user" value={form.user} onChange={getPostByUser} />
                                     <label htmlFor="filterUser">User</label>
-                                    <div className="m-2 position-relative">
 
-                                        <div className={`py-1 position-absolute w-100 ${showFilter ? 'visible' : ''}`} id="filterContent"
-                                            style={{ border: "1px solid #eaeaea", borderRadius: "5px", top: "-15px", background: "#fff" }}
+                                    <div className="m-2 position-relative">
+                                        <div className={`py-1 position-absolute w-100 ${showUsers ? 'visible' : ''}`} id="filterContent"
+                                            style={{ border: "1px solid #eaeaea", zIndex: '100', borderRadius: "5px", top: "-15px", background: "#fff" }}
                                         >
-                                            <p className="m-0 py-2 text-center" id="filter" onClick={() => handlerFilter()} style={{ cursor: "pointer" }}>User</p>
+                                            {form.users &&
+                                                form.users.map(user => (
+                                                    <p key={user.id} className="m-0 py-2 text-center" id="filter" onClick={() => getPostByUser({ target: { value: user.id } })} style={{ cursor: "pointer" }}>{user.name}</p>
+                                                ))
+                                            }
+
                                         </div>
                                     </div>
                                 </div>

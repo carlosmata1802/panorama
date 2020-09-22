@@ -48,7 +48,7 @@ const Modal = ({ handleSubmit, users, api }) => {
                                 <select id="usuarioSelect" className="form-control" name="userId" onChange={handleChange}>
                                     <option value="">Selecciona un usuario</option>
                                     {users && users.map(user => (
-                                        <option ket={user.id} value={user.id}>{user.name}</option>
+                                        <option key={user.id} value={user.id}>{user.name}</option>
                                     ))}
                                 </select>
                             </div>

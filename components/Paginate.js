@@ -6,7 +6,6 @@ const Paginate = ({ handleSetRows, total, from, setFrom, to, setTo }) => {
     const [rows, setRows] = useState(10)
 
     const getPages = () => {
-        console.log("PAges", total)
         let pages = total % rows !== 0 ? parseInt(total / rows) + 1 : parseInt(total / rows);
         setPages([...Array(pages).keys()].map(x => x + 1));
         console.log([...Array(pages).keys()].map(x => x + 1), total % rows)
@@ -22,8 +21,6 @@ const Paginate = ({ handleSetRows, total, from, setFrom, to, setTo }) => {
         getPages();
     }, [total, rows])
     useEffect(() => {
-        console.log("Page", actualPage, (actualPage - 1) * rows)
-        console.log("TO", Number((actualPage - 1) * rows) + Number(rows))
         setFrom(actualPage === 1 ? 0 : (actualPage - 1) * rows)
         setTo(actualPage === 1 ? rows : ((actualPage - 1) * rows) + Number(rows))
     }, [actualPage])
